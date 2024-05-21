@@ -1,0 +1,205 @@
+import java.util.Scanner;
+public class Library {
+	public static Scanner in = new Scanner(System.in);
+
+	public static class Book {
+		String Bookname;
+		int Booknumber;
+		int Bookmuch;
+	}
+
+	public static class Book2 {
+		String nameStudent;
+		String nameBook;
+		int number;
+		String numberStudent;
+		String dat;
+	}
+
+	public static Book[] addBooks(Book[] addBook, int startNumber, int count) {
+		for (int i = startNumber - count; i < startNumber; i++) {
+			Book Book = new Book();
+			System.out.println("اسم الكتاب :" + (i + 1));
+			Book.Bookname = in.next();
+			System.out.println("الكميه المتوفره منه:");
+			Book.Bookmuch = in.nextInt();
+			Book.Booknumber = (i + 1);
+			addBook[i] = Book;
+			System.out.println("لقد تم اضافه الكتاب  بنجاح ***");
+		}
+		return addBook;
+	}
+
+	public static Book2[] borrowBook(Book2[] borrowBook, int startIndex, int bookCount, Book[]addBook) {
+		for (int i = startIndex; i < startIndex + 1; i++) {
+			Book2 pp = new Book2();
+			System.out.println("اسم الطالب  :");
+			pp.nameStudent = in.next();
+			System.out.println("الرقم الاكاديمي  :");
+			pp.numberStudent = in.next();
+			System.out.println("اسم الكتاب :");
+			pp.nameBook = in.next();
+			System.out.println("تاريخ اليوم :");
+			pp.dat = in.next();
+			pp.number = (i + 1);
+			if (comparison(addBook, pp.nameBook, bookCount) == true)
+				borrowBook[i] = pp;
+			else {
+				System.out.println("الكتاب غير موجود اعد المحاول ##");
+				i--;
+			}
+		}
+
+		return borrowBook;
+	}
+
+	public static Book[] deleteBook(Book[] addBook, int bookCount) {
+		System.out.println("اسم الكتاب :");
+		String Bookname = in.next();
+		for (int i = 0; i < bookCount; i++) {
+			if (addBook[i].Bookname.equals(Bookname)) {
+
+				for (int j = i; j < bookCount; j++) {
+					addBook[j].Bookname = addBook[j + 1].Bookname;
+					addBook[i].Booknumber = addBook[j + 1].Booknumber;
+					addBook[i].Bookmuch = addBook[j + 1].Bookmuch;
+				}
+			}
+		}
+		return  addBook;
+	}
+
+	public static Book2[] ReturnBook(Book2[] ReturnBook, int startIndex) {
+
+		for (int i = startIndex; i < startIndex + 1 ; i++) {
+			Book2 pp = new Book2();
+			System.out.println("اسم الطالب  :");
+			pp.nameStudent = in.next();
+			System.out.println("الرقم الاكاديمي  :");
+			pp.numberStudent = in.next();
+			System.out.println("اسم الكتاب :");
+			pp.nameBook = in.next();
+			System.out.println("تاريخ اليوم :");
+			pp.dat = in.next();
+			pp.number = (i + 1);
+			ReturnBook[i] = pp;
+		}
+		return ReturnBook;
+	}
+	public static  void PrintborrowBook(Book2[] borrowBook, Book2[]ReturnBook, int countborrowBook, int countReturnBook) {
+
+		for (int i = 0; i < countborrowBook; i++) {
+			for (int j = 0; j < countReturnBook; j++) {
+				if ((borrowBook[i].nameStudent.equals(ReturnBook[j].nameStudent))
+						&& (borrowBook[i].numberStudent.equals(ReturnBook[j].numberStudent))
+						&& (borrowBook[i].nameBook.equals(ReturnBook[j].nameBook))) {
+				} else {
+
+					System.out.println("اسم الطالب  :" + borrowBook[i].nameStudent);
+					System.out.println("الرقم الاكاديمي  :" + borrowBook[i].numberStudent);
+					System.out.println("اسم الكتاب :" + borrowBook[i].nameBook);
+					System.out.println("تاريخ اليوم :" + borrowBook[i].dat);
+				}
+			}
+
+		}
+		if (countReturnBook == 0) {
+			for (int i = 0; i < countborrowBook; i++) {
+				System.out.println("اسم الطالب  :" + borrowBook[i].nameStudent);
+				System.out.println("الرقم الاكاديمي  :" + borrowBook[i].numberStudent);
+				System.out.println("اسم الكتاب :" + borrowBook[i].nameBook);
+				System.out.println("تاريخ اليوم :" + borrowBook[i].dat);
+			}
+		}
+		System.out.println("0.للخروج");
+		int end = in.nextInt();
+
+	}
+
+	public static void Notes() {
+		System.out.println("1.اضافه كتاب");
+		System.out.println("2.استعاره كتاب");
+		System.out.println("3. اعاده الكتاب");
+		System.out.println("4.عرض الكتب المستعاره");
+		System.out.println("5.حذف كتاب");
+		System.out.println("0.للخروج");
+
+	}
+
+	public static  boolean comparison(Book[] addBook, String name, int count) {
+		boolean g = true;
+		int a = 0;
+		for (int i = 0; i < count; i++) {
+			if (addBook[i].Bookname.equals(name))
+				a++;
+		}
+		if (a > 0) {
+			g = true;
+		} else {
+			g = false;
+		}
+		return g;
+	}
+
+	public static void Library() {
+		int choice;
+		int addBookcount = 0, countborrowBook = 0;
+		int  countReturnBook = 0;
+		Book[] addBook = new Book[5000];
+		Book2[] borrowBook = new Book2[5000];
+		Book2[] ReturnBook = new Book2[5000];
+		do {
+			clearScreen();
+			Notes();
+			choice = in.nextInt();
+			clearScreen();
+			switch (choice) {
+			case 1:
+				System.out.println("عدد الكتب التى سوف تضيفها =");
+				int NumberOfBooksAdded = in.nextInt();
+				addBookcount = addBookcount + NumberOfBooksAdded;
+				addBook = addBooks(addBook, addBookcount, NumberOfBooksAdded);
+				break;
+			case 2:
+				if (addBookcount == 0) {
+					System.out.print("لم يتم اضافه الكتب حتى الان ##");
+
+				} else {
+					borrowBook = borrowBook(borrowBook, countborrowBook, addBookcount, addBook);
+					countborrowBook++;
+				}
+
+				break;
+			case 3:
+				if (countborrowBook > 0) {
+					ReturnBook = ReturnBook(ReturnBook, countReturnBook);
+					countReturnBook++;
+				}
+				break;
+			case 4:
+				PrintborrowBook(borrowBook, ReturnBook, countborrowBook, countReturnBook);
+				break;
+			case 5:
+				if (addBookcount > 0) {
+					addBook = deleteBook(addBook, addBookcount);
+				}
+				break;
+			case 0:
+				System.out.println("***");
+				break;
+			default:
+				System.out.println("خطأ");
+				break;
+			}
+
+		} while (choice != 0);
+	}
+
+	private static void clearScreen() {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+	}
+	public static void main(String[] args) {
+		Library() ;
+	}
+}
